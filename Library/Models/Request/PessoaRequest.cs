@@ -14,5 +14,8 @@ namespace Library.Models.Request
         [Required]
         [Range(1, int.MaxValue)]
         public int PageSize { get; set; }
+
+        [Required]
+        public bool MaisQueUmTelefone { get; set; }
     }
 }

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using Library.Utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
@@ -40,6 +42,7 @@ namespace Teste
             ConfiguracoesServicos(services);
             ConfiguracoesRepositorios(services);
             ConfiguracaoCors(services);
+            ConfiguracaoAutoMapper(services);
         }
 
         private void ConfiguracaoCors(IServiceCollection services)
@@ -76,6 +79,21 @@ namespace Teste
             services.AddEntityFrameworkNpgsql()
                     .AddDbContext<Context>()
                     .BuildServiceProvider();
+        }
+
+        private void ConfiguracaoAutoMapper(IServiceCollection services)
+        {
+            //Configurando o auto mapper
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            mappingConfig.CompileMappings();
+
+            IMapper mapper = mappingConfig.CreateMapper();
+
+            services.AddSingleton(mapper);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

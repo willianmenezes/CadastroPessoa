@@ -12,7 +12,7 @@ namespace Library.Entities
 
         [Required]
         [MaxLength(11)]
-        public int Numero { get; set; }
+        public string Numero { get; set; }
 
         public virtual Pessoa Pessoa { get; set; }
     }

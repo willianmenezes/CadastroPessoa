@@ -1,4 +1,5 @@
-﻿using Library.Models;
+﻿using Library.Entities;
+using Library.Models;
 using Library.Models.Request;
 using Library.Models.Response;
 using Repository.IRepositories;
@@ -11,27 +12,57 @@ namespace Service.Services
 {
     public class PessoaService : IPessoaService
     {
-		private readonly IPessoaRepository _pessoaRepository;
-		public PessoaService(IPessoaRepository pessoaRepository)
-		{
-			_pessoaRepository = pessoaRepository;
-		}
+        private readonly IPessoaRepository _pessoaRepository;
+        public PessoaService(IPessoaRepository pessoaRepository)
+        {
+            _pessoaRepository = pessoaRepository;
+        }
+
+        public Pessoa GetPessoaById(Guid pessoaId)
+        {
+            try
+            {
+                if (pessoaId == Guid.Empty)
+                {
+                    throw new ArgumentNullException(string.Format("Dados não informados para a operação", pessoaId));
+                }
+
+                var pessoa = _pessoaRepository.GetPessoaById(pessoaId);
+
+                if (pessoa == null)
+                {
+                    throw new Exception("Pessoa não encontrada");
+                }
+
+                return pessoa;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
         public PagedQueries<PessoaResponse> GetPessoas(PessoaRequest request)
         {
-			try
-			{
-				if (request == null)
-				{
-					throw new Exception("Dados não fornecidos corretamente");
-				}
+            try
+            {
+                if (request == null)
+                {
+                    throw new Exception("Dados não fornecidos corretamente");
+                }
 
-				return _pessoaRepository.GetPessoas(request.PageIndex, request.PageSize);
-			}
-			catch (Exception)
-			{
-				throw;
-			}
+                int minimoTelefones = 0;
+                if (request.MaisQueUmTelefone)
+                {
+                    minimoTelefones++;
+                }
+
+                return _pessoaRepository.GetPessoas(request.PageSize, request.PageIndex, minimoTelefones);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

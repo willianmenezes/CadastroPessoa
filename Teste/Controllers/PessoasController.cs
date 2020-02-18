@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Library.Models.Request;
 using Library.Models.Response;
 using Microsoft.AspNetCore.Http;
@@ -15,10 +16,12 @@ namespace Teste.Controllers
     public class PessoasController : ControllerBase
     {
         private readonly IPessoaService _pessoaService;
+        private readonly IMapper _mapper;
 
-        public PessoasController(IPessoaService pessoaService)
+        public PessoasController(IPessoaService pessoaService, IMapper mapper)
         {
             _pessoaService = pessoaService;
+            _mapper = mapper;
         }
 
         [ProducesResponseType(200)]
@@ -39,6 +42,21 @@ namespace Teste.Controllers
                 };
 
                 return Ok(paginationResponse);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [HttpGet("{pessoaId}")]
+        public IActionResult GetPessoaById([FromRoute] Guid pessoaId)
+        {
+            try
+            {
+                return Ok(_mapper.Map<DetalhesPessoaResponse>(_pessoaService.GetPessoaById(pessoaId)));
             }
             catch (Exception ex)
             {

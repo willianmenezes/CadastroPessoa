@@ -9,6 +9,8 @@ namespace Repository.IRepositories
 {
     public interface IPessoaRepository
     {
-        PagedQueries<PessoaResponse> GetPessoas(int pageSize, int pageIndex);
+        PagedQueries<PessoaResponse> GetPessoas(int pageSize, int pageIndex, int minimoTelefones);
+
+        Pessoa GetPessoaById(Guid pessoaId);
     }
 }
