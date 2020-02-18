@@ -1,11 +1,8 @@
-﻿using Library;
+﻿using Library.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Repository.Repository.EntityConfig
+namespace Repository.EntityConfig
 {
     public class PessoaEntityConfig : IEntityTypeConfiguration<Pessoa>
     {

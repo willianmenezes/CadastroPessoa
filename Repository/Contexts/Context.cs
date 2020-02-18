@@ -1,7 +1,7 @@
-﻿using Library;
+﻿using Library.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Repository.Repository.EntityConfig;
+using Repository.EntityConfig;
 
 namespace Repository.Contexts
 {

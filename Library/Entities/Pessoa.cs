@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
-namespace Library
+namespace Library.Entities
 {
     public class Pessoa
     {
@@ -11,10 +10,10 @@ namespace Library
 
         [Required]
         [MaxLength(200)]
-        public int Nome { get; set; }
+        public string Nome { get; set; }
 
         [Required]
-        public int DataNascimento { get; set; }
+        public DateTime DataNascimento { get; set; }
 
         public virtual ICollection<Telefone> Telefone { get; set; }
     }

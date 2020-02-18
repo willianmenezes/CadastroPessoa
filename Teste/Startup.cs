@@ -11,6 +11,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Repository.Contexts;
+using Repository.IRepositories;
+using Repository.Repositories;
+using Repository.Repository;
+using Service.IServices;
+using Service.Services;
 
 namespace Teste
 {
@@ -29,8 +34,24 @@ namespace Teste
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddMvc().AddJsonOptions(options => { });
+
             ConfiguracoesContexto(services);
+            ConfiguracoesServicos(services);
+            ConfiguracoesRepositorios(services);
         }
+
+        private static void ConfiguracoesServicos(IServiceCollection services)
+        {
+            services.AddScoped<IPessoaService, PessoaService>();
+            services.AddScoped<ITelefoneService, TelefoneService>();
+        }
+
+        private static void ConfiguracoesRepositorios(IServiceCollection services)
+        {
+            services.AddScoped<IPessoaRepository, PessoaRepository>();
+            services.AddScoped<ITelefoneRepository, TelefoneRepository>();
+        }
+
 
         private static void ConfiguracoesContexto(IServiceCollection services)
         {
