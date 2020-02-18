@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
@@ -38,6 +39,22 @@ namespace Teste
             ConfiguracoesContexto(services);
             ConfiguracoesServicos(services);
             ConfiguracoesRepositorios(services);
+            ConfiguracaoCors(services);
+        }
+
+        private void ConfiguracaoCors(IServiceCollection services)
+        {
+            //formatando o CORS para aceitar requisições de qualquer endereço
+            var corsBuilder = new CorsPolicyBuilder();
+            corsBuilder.AllowAnyHeader();
+            corsBuilder.AllowAnyMethod();
+            corsBuilder.AllowAnyOrigin();
+            corsBuilder.AllowCredentials();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("SiteCorsPolicy", corsBuilder.Build());
+            });
         }
 
         private static void ConfiguracoesServicos(IServiceCollection services)
@@ -74,6 +91,7 @@ namespace Teste
                 app.UseHsts();
             }
 
+            app.UseCors("SiteCorsPolicy");
             app.UseHttpsRedirection();
             app.UseMvc();
 
