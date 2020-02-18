@@ -1,8 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Library;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Repository.Repository.EntityConfig;
 
 namespace Repository.Contexts
 {
@@ -14,6 +13,8 @@ namespace Repository.Contexts
         {
             this._configuration = configuration;
         }
+        public virtual DbSet<Pessoa> Pessoa { get; set; }
+        public virtual DbSet<Telefone> Telefone { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -28,6 +29,9 @@ namespace Repository.Contexts
             modelBuilder.HasAnnotation("ProductVersion", "2.2.4-servicing-10062");
 
             modelBuilder.HasPostgresExtension("uuid - ossp");
+
+            _ = modelBuilder.ApplyConfiguration(new PessoaEntityConfig());
+            _ = modelBuilder.ApplyConfiguration(new TelefoneEntityConfig());
         }
     }
 }

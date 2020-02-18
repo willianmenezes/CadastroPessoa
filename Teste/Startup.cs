@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Repository.Contexts;
 
 namespace Teste
 {
@@ -26,6 +27,17 @@ namespace Teste
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddMvc().AddJsonOptions(options => { });
+            ConfiguracoesContexto(services);
+        }
+
+        private static void ConfiguracoesContexto(IServiceCollection services)
+        {
+            //injetando contexto do banco de dados
+            services.AddEntityFrameworkNpgsql()
+                    .AddDbContext<Context>()
+                    .BuildServiceProvider();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,6 +55,13 @@ namespace Teste
 
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                        name: "default",
+                        template: "/api/{controller}/{action}/{id?}");
+            });
         }
     }
 }
