@@ -54,7 +54,7 @@ namespace Service.Services
                 int minimoTelefones = 0;
                 if (request.MaisQueUmTelefone)
                 {
-                    minimoTelefones++;
+                    minimoTelefones += 2;
                 }
 
                 return _pessoaRepository.GetPessoas(request.PageSize, request.PageIndex, minimoTelefones);

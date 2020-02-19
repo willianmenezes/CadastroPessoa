@@ -33,13 +33,17 @@ namespace Repository.Repository
         {
             try
             {
-                var query = _context.Pessoa.Select(x => new PessoaResponse
-                {
-                    PessoaId = x.PessoaId,
-                    DataNascimento = x.DataNascimento,
-                    Nome = x.Nome,
-                    QuantidadeTelefones = _context.Telefone.Where(y => y.PessoaId.Equals(x.PessoaId)).Count()
-                }).Where(x => x.QuantidadeTelefones > minimoTelefones).AsNoTracking();
+                var query = _context.Pessoa
+                    .Select(x => new PessoaResponse
+                    {
+                        PessoaId = x.PessoaId,
+                        DataNascimento = x.DataNascimento,
+                        Nome = x.Nome,
+                        QuantidadeTelefones = _context.Telefone.Where(y => y.PessoaId.Equals(x.PessoaId)).Count()
+                    })
+                    .Where(x => x.QuantidadeTelefones >= minimoTelefones)
+                    .OrderBy(x => x.Nome.ToLower())
+                    .AsNoTracking();
 
                 return PagedQueries<PessoaResponse>.Create(query, pageIndex, pageSize);
             }
